@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Durán Carasso · Reseñas</title>
+<style>
+  body { margin: 0; background: #f3f1ec; font-family: Helvetica, Arial, sans-serif; color: #1f2937; }
+  .wrap { max-width: 520px; margin: 48px auto; padding: 0 16px; }
+  .card { background: #fff; border: 1px solid #e5e1d8; border-radius: 14px; padding: 36px 20px; text-align: center; }
+  .icono { width: 56px; height: 56px; line-height: 56px; border-radius: 50%; margin: 0 auto 18px;
+           background: #14213d; color: #fff; font-size: 28px; font-weight: bold; }
+  .ok { background: #1f7a4d; } .info { background: #14213d; } .error { background: #b42318; }
+  .girando { background: none; border: 5px solid #e5e1d8; border-top-color: #14213d; box-sizing: border-box;
+             animation: g 0.9s linear infinite; }
+  @keyframes g { to { transform: rotate(360deg); } }
+  h1 { font-size: 22px; margin: 0 0 14px; }
+  p { font-size: 15px; line-height: 1.6; color: #374151; margin: 0; }
+  button { margin-top: 22px; padding: 12px 22px; border: 0; border-radius: 8px; background: #1f7a4d; color: #fff;
+           font-size: 14px; font-weight: bold; cursor: pointer; }
+  .pie { text-align: center; color: #6b7280; font-size: 12px; margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div id="icono" class="icono girando"></div>
+    <h1 id="titulo">Publicando en Google…</h1>
+    <p id="texto">Un momento, no cierres esta pestaña.</p>
+    <button id="reintentar" hidden>Volver a intentarlo</button>
+  </div>
+  <p class="pie">Durán Carasso · Gestión de reseñas</p>
+</div>
+<script>
+  // Esta página está fuera de Google a propósito: llama al robot (web app de Apps Script) sin las
+  // cookies de Google del navegador, así que funciona aunque haya varias cuentas de Google abiertas.
+  var ROBOT = 'https://script.google.com/macros/s/AKfycbzfTJuNfpVrpQUjnsOz25ARJ9v3uHBeEue0s-TC5PcAczetRc6-2MIjru26OxVi7gooXg/exec';
+  var ICONOS = { ok: '✓', info: 'i', error: '!' };
+
+  function mostrar(tipo, titulo, html) {
+    var icono = document.getElementById('icono');
+    icono.className = 'icono ' + tipo;
+    icono.textContent = ICONOS[tipo] || '';
+    document.getElementById('titulo').textContent = titulo;
+    document.getElementById('texto').innerHTML = html; // el robot ya escapa el texto de la reseña
+    document.title = titulo + ' · Durán Carasso';
+  }
+
+  function publicar() {
+    var boton = document.getElementById('reintentar');
+    boton.hidden = true;
+    var p = new URLSearchParams(location.search);
+    if (!p.get('id') || !p.get('t')) {
+      mostrar('error', 'Enlace no válido', 'Abre el botón "Publicar" desde el correo del aviso.');
+      return;
+    }
+    p.set('fmt', 'json');
+    var control = new AbortController();
+    var espera = setTimeout(function () { control.abort(); }, 60000);
+    fetch(ROBOT + '?' + p.toString(), { credentials: 'omit', cache: 'no-store', signal: control.signal })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (r) {
+        clearTimeout(espera);
+        mostrar(ICONOS[r.tipo] ? r.tipo : 'error', r.titulo || 'Respuesta del robot', r.texto || '');
+      })
+      .catch(function () {
+        clearTimeout(espera);
+        mostrar('error', 'No se ha podido conectar con el robot',
+          'Comprueba la conexión y vuelve a intentarlo. Si la respuesta ya se publicó, no se publicará dos veces.');
+        boton.hidden = false;
+      });
+  }
+
+  document.getElementById('reintentar').addEventListener('click', function () {
+    mostrar('info', 'Publicando en Google…', 'Un momento, no cierres esta pestaña.');
+    document.getElementById('icono').className = 'icono girando';
+    document.getElementById('icono').textContent = '';
+    publicar();
+  });
+  publicar();
+</script>
+</body>
+</html>
