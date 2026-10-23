@@ -6,24 +6,34 @@
 <meta name="robots" content="noindex,nofollow">
 <meta name="referrer" content="no-referrer">
 <title>Durán Carasso · Reseñas</title>
+<link rel="icon" href="https://adriapintat-rgb.github.io/durancarasso-paneles/dc/favicon-icon.png">
 <style>
-  body { margin: 0; background: #f3f1ec; font-family: Helvetica, Arial, sans-serif; color: #1f2937; }
-  .wrap { max-width: 520px; margin: 48px auto; padding: 0 16px; }
-  .card { background: #fff; border: 1px solid #e5e1d8; border-radius: 14px; padding: 36px 20px; text-align: center; }
+  /* Propio de esta página; el look común (colores, tipografía, barra) viene del kit DC enlazado debajo. */
+  body { margin: 0; }
+  .wrap { max-width: 520px; margin: 40px auto; padding: 0 16px; }
+  .card { background: var(--surface, #fff); border: 1px solid var(--line, #e2e2e2); border-radius: 14px; padding: 36px 20px; text-align: center; }
   .icono { width: 56px; height: 56px; line-height: 56px; border-radius: 50%; margin: 0 auto 18px;
-           background: #14213d; color: #fff; font-size: 28px; font-weight: bold; }
-  .ok { background: #1f7a4d; } .info { background: #14213d; } .error { background: #b42318; }
-  .girando { background: none; border: 5px solid #e5e1d8; border-top-color: #14213d; box-sizing: border-box;
+           background: var(--brand, #003d4b); color: var(--brand-ink, #fff); font-size: 28px; font-weight: 600; }
+  .ok { background: #1f7a4d; color: #fff; } .info { background: var(--brand, #003d4b); } .error { background: #b42318; color: #fff; }
+  .girando { background: none; border: 5px solid var(--brand-tint, #dbe8eb); border-top-color: var(--brand, #003d4b); box-sizing: border-box;
              animation: g 0.9s linear infinite; }
   @keyframes g { to { transform: rotate(360deg); } }
-  h1 { font-size: 22px; margin: 0 0 14px; }
-  p { font-size: 15px; line-height: 1.6; color: #374151; margin: 0; }
-  button { margin-top: 22px; padding: 12px 22px; border: 0; border-radius: 8px; background: #1f7a4d; color: #fff;
-           font-size: 14px; font-weight: bold; cursor: pointer; }
-  .pie { text-align: center; color: #6b7280; font-size: 12px; margin-top: 18px; }
+  @media (prefers-reduced-motion: reduce) { .girando { animation-duration: 2.4s; } }
+  h1 { font-size: 24px; margin: 0 0 14px; }
+  p { font-size: 16px; line-height: 1.6; color: var(--ink, #1a1a1a); margin: 0; }
+  button { margin-top: 22px; min-height: 44px; padding: 0 22px; border: 0; border-radius: 12px; background: var(--brand, #003d4b); color: var(--brand-ink, #fff);
+           font: 600 15px/1 var(--sans, system-ui, sans-serif); cursor: pointer; }
+  .pie { text-align: center; color: var(--muted, #666); font-size: 13px; margin-top: 18px; }
 </style>
+<link rel="stylesheet" href="https://adriapintat-rgb.github.io/durancarasso-paneles/dc/dc-ui.css">
 </head>
 <body>
+<header class="dc-topbar">
+  <a class="dc-brand" href="https://dc-hub-lilac.vercel.app" target="_top" aria-label="Durán Carasso"><img class="dc-logo-largo" src="https://adriapintat-rgb.github.io/durancarasso-paneles/dc/logo-largo.jpg" alt="Durán Carasso"><img class="dc-logo-corto" src="https://adriapintat-rgb.github.io/durancarasso-paneles/dc/logo-redondo.png" alt=""></a>
+  <span class="dc-sep" aria-hidden="true"></span>
+  <span class="dc-titulo">Reseñas</span>
+  <span class="dc-hueco"></span>
+</header>
 <div class="wrap">
   <div class="card">
     <div id="icono" class="icono girando"></div>
